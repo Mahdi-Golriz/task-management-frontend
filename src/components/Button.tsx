@@ -3,13 +3,11 @@ import { cn } from "../utils/cn";
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text?: string;
-  onClick: () => void;
   Icon?: IconType;
   variant: "dark" | "light" | "action";
 }
 
 const Button: React.FC<IProps> = ({
-  onClick,
   text,
   Icon,
   className,
@@ -34,7 +32,6 @@ const Button: React.FC<IProps> = ({
 
   return (
     <button
-      onClick={onClick}
       className={cn(commpmStyles, variantStyles[variant], className)}
       {...props}
     >

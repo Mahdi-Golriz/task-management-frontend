@@ -1,14 +1,20 @@
 import Item from "./Item";
 import TableHeader from "./TableHeader";
+import { ITask } from "../services/apiTasks";
+import { useTasks } from "../context/tasksContext";
+import { useCategories } from "../context/categoriesContext";
 
 const List: React.FC = () => {
+  const { tasks } = useTasks();
+
   return (
     <div className="w-full flex flex-col gap-2">
       <TableHeader />
-      <Item />
-      <Item />
-      <Item />
-      <Item />
+      {tasks.length === 0 ? (
+        <p className="font-bold text-center p-4">Start to add your tasks</p>
+      ) : (
+        tasks.map((task: ITask) => <Item task={task} key={task._id} />)
+      )}
     </div>
   );
 };
