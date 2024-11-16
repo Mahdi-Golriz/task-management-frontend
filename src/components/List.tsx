@@ -2,7 +2,6 @@ import Item from "./Item";
 import TableHeader from "./TableHeader";
 import { ITask } from "../services/apiTasks";
 import { useTasks } from "../context/tasksContext";
-import { useCategories } from "../context/categoriesContext";
 
 const List: React.FC = () => {
   const { tasks } = useTasks();

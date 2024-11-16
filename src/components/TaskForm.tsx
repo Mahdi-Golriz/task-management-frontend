@@ -13,7 +13,7 @@ interface ITaskProps {
   task?: ITask;
 }
 
-enum Status {
+export enum Status {
   Pending = "Pending",
   Planned = "Planned",
   Done = "Done",
@@ -41,7 +41,7 @@ const TaskForm: React.FC<ITaskProps> = ({
   );
 
   const categories: ICategory[] = useCategories();
-  const { addTask } = useTasks();
+  const { addTask, updateTask } = useTasks();
 
   const createNewTask: Function = async () => {
     const newTask = {
@@ -77,6 +77,7 @@ const TaskForm: React.FC<ITaskProps> = ({
 
     try {
       const editedTask = await editTask(edition);
+      updateTask(editedTask);
       alert("The task was edited");
     } catch (error) {
       console.error("Failed to eidt task:", error);
@@ -109,6 +110,7 @@ const TaskForm: React.FC<ITaskProps> = ({
             className="w-full border-2 p-2 box-border"
             placeholder="title..."
             onChange={(e) => setTitle(e.target.value)}
+            required
           />
 
           <label htmlFor="description">Description of Task</label>
@@ -130,6 +132,7 @@ const TaskForm: React.FC<ITaskProps> = ({
                 value={due as string}
                 className="border-2 p-2 box-border"
                 onChange={(e) => setDue(e.target.value)}
+                required
               />
             </div>
 
@@ -152,6 +155,7 @@ const TaskForm: React.FC<ITaskProps> = ({
             value={category}
             className="w-full border-2 p-2 box-border"
             onChange={(e) => setCategory(e.target.value)}
+            required
           >
             <option value="" disabled>
               Select a category

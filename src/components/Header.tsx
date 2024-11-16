@@ -3,15 +3,24 @@ import Button from "./Button";
 import { FiPlus } from "react-icons/fi";
 import CategoryForm from "./CategoryForm";
 import TaskForm from "./TaskForm";
+import { useTheme } from "../context/themeContext";
+import { FaMoon } from "react-icons/fa6";
+import { MdOutlineWbSunny } from "react-icons/md";
 
 const Header: React.FC = (): ReactElement => {
   const [isShowedCategoryForm, setIsShowedCategoryForm] = useState(false);
   const [isShowedTaskForm, setIsShowedTaskForm] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="w-full flex justify-between items-center mb-2 border">
       <h2 className="ml-2 font-extrabold">Tasks</h2>
       <div className="flex">
+        <Button
+          Icon={theme === "light" ? MdOutlineWbSunny : FaMoon}
+          onClick={toggleTheme}
+          variant="light"
+        />
         <Button
           text="New Category"
           Icon={FiPlus}

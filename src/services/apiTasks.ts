@@ -32,11 +32,29 @@ export const createTask: Function = async (task: ITask): Promise<ITask> => {
   return data;
 };
 
-export const getAllTasks: Function = async (): Promise<ITask[]> => {
-  const res = await fetch(API_URL);
+// export const getAllTasks: Function = async (): Promise<ITask[]> => {
+//   const res = await fetch(API_URL);
 
+//   if (!res.ok) {
+//     throw new Error(`Faild to fetch the tasks: ${res.statusText}`);
+//   }
+
+//   const data: ITask[] = await res.json();
+//   return data;
+// };
+
+export const getTasks = async (filters: {
+  category_id?: string;
+  status?: string;
+  search?: string;
+}): Promise<ITask[]> => {
+  const query = new URLSearchParams(
+    filters as Record<string, string>
+  ).toString();
+
+  const res = await fetch(`${API_URL}?${query}`);
   if (!res.ok) {
-    throw new Error(`Faild to fetch the tasks: ${res.statusText}`);
+    throw new Error(`Error fetching tasks: ${res.statusText}`);
   }
 
   const data: ITask[] = await res.json();
