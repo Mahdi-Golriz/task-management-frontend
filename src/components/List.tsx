@@ -10,7 +10,9 @@ const List: React.FC = () => {
     <div className="w-full flex flex-col gap-2">
       <TableHeader />
       {tasks.length === 0 ? (
-        <p className="font-bold text-center p-4">Start to add your tasks</p>
+        <p className="font-bold text-center p-4 dark:text-white">
+          Start to add your tasks
+        </p>
       ) : (
         tasks.map((task: ITask) => <Item task={task} key={task._id} />)
       )}

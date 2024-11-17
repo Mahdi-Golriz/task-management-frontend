@@ -11,7 +11,7 @@ export interface ITask {
   dueDate: string;
   category_id: string;
   description?: string;
-  status: "Done" | "Planed" | "Pending";
+  status: "Done" | "Planned" | "Pending";
   createdAt: string;
 }
 

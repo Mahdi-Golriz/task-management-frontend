@@ -14,7 +14,9 @@ const Header: React.FC = (): ReactElement => {
 
   return (
     <div className="w-full flex justify-between items-center mb-2 border">
-      <h2 className="ml-2 font-extrabold">Tasks</h2>
+      <h2 className="ml-2 font-extrabold text-black dark:text-gray-300 ">
+        Tasks
+      </h2>
       <div className="flex">
         <Button
           Icon={theme === "light" ? MdOutlineWbSunny : FaMoon}
