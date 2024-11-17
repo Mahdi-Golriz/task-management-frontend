@@ -41,7 +41,7 @@ const TaskForm: React.FC<ITaskProps> = ({
   );
 
   const categories: ICategory[] = useCategories();
-  const { addTask, updateTask } = useTasks();
+  const { addTask, updateTask, fetchTasks } = useTasks();
 
   const createNewTask: Function = async () => {
     const newTask = {

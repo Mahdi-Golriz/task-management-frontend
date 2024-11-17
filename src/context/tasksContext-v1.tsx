@@ -4,6 +4,7 @@ import {
   useContext,
   useEffect,
   useReducer,
+  useState,
 } from "react";
 import { getTasks, ITask } from "../services/apiTasks";
 
@@ -18,55 +19,15 @@ interface TasksContextProps {
     search?: string;
   }) => void;
 }
+
 interface TasksProviderProps {
   children: ReactNode;
 }
-
-interface TasksState {
-  tasks: ITask[];
-}
-
-type Action =
-  | { type: "tasks/loaded"; payload: ITask[] }
-  | { type: "tasks/added"; payload: ITask }
-  | { type: "tasks/removed"; payload: string }
-  | { type: "tasks/updated"; payload: ITask };
-
 const TasksContext = createContext<TasksContextProps | undefined>(undefined);
 
-const initialState: TasksState = { tasks: [] };
-
-const reducer = (state: TasksState, action: Action) => {
-  switch (action.type) {
-    case "tasks/loaded":
-      return { tasks: action.payload };
-
-    case "tasks/added":
-      return { ...state, tasks: [...state.tasks, action.payload] };
-
-    case "tasks/removed":
-      return {
-        ...state,
-        tasks: state.tasks.filter((task: ITask) => task._id !== action.payload),
-      };
-
-    case "tasks/updated":
-      return {
-        ...state,
-        tasks: state.tasks.map((task: ITask) =>
-          task._id === action.payload._id
-            ? { ...task, ...action.payload }
-            : task
-        ),
-      };
-
-    default:
-      throw new Error("Action unknown!");
-  }
-};
-
 const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
-  const [{ tasks }, dispatch] = useReducer(reducer, initialState);
+  const [tasks, setTasks] = useState<ITask[]>([]);
+  // const [{ tasks }, dispatch] = useReducer(reducer, initialState);
 
   const fetchTasks = async (filters: {
     category_id?: string;
@@ -74,7 +35,7 @@ const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
     search?: string;
   }) => {
     const data = await getTasks(filters);
-    dispatch({ type: "tasks/loaded", payload: data });
+    setTasks(data);
   };
 
   useEffect(() => {
@@ -82,15 +43,18 @@ const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
   }, []);
 
   const addTask = (task: ITask) => {
-    dispatch({ type: "tasks/added", payload: task });
+    setTasks((prevTasks) => [...prevTasks, task]);
   };
 
   const removeTask = (taskId: string) => {
-    dispatch({ type: "tasks/removed", payload: taskId });
+    setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
   };
 
   const updateTask = (task: ITask) => {
-    dispatch({ type: "tasks/updated", payload: task });
+    console.log(task);
+    setTasks((prevTasks) =>
+      prevTasks.map((tk) => (tk._id === task._id ? { ...tk, ...task } : tk))
+    );
   };
 
   return (

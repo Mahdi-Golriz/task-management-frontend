@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
       <p>
         {donePercentage === 100
           ? "Congrats! You have done all your tasks."
-          : `You have done ${donePercentage} percent of your tasks. ${pendingPercentage} percent of your tasks are pending and also ${plannedPercentage} percent of your tasks were planned to be done!`}
+          : `You have done ${donePercentage}% of your tasks. ${pendingPercentage}% of your tasks are pending and also ${plannedPercentage}% of your tasks were planned to be done!`}
       </p>
     </div>
   );

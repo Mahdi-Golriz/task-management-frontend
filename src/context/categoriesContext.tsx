@@ -35,7 +35,6 @@ const CategoriesProvider: React.FC<CategoriesProviderProps> = ({
 
 const useCategories: Function = () => {
   const context = useContext(CategoriesContext);
-
   if (context === undefined)
     throw new Error("useContext is used outside of the Provider");
 

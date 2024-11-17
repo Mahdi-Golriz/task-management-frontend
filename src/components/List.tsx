@@ -11,7 +11,7 @@ const List: React.FC = () => {
       <TableHeader />
       {tasks.length === 0 ? (
         <p className="font-bold text-center p-4 dark:text-white">
-          Start to add your tasks
+          There is No Task!
         </p>
       ) : (
         tasks.map((task: ITask) => <Item task={task} key={task._id} />)
