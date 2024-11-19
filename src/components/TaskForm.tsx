@@ -123,32 +123,15 @@ const TaskForm: React.FC<ITaskProps> = ({
             rows={4}
           />
 
-          <div className="flex">
-            <div>
-              <label htmlFor="due">Due Date</label>
-              <input
-                id="due"
-                type="date"
-                value={due as string}
-                className="border-2 p-2 box-border"
-                onChange={(e) => setDue(e.target.value)}
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="createdAt">Created At</label>
-              <input
-                id="createdAt"
-                type="date"
-                value={createdAt as string}
-                className="border-2 p-2 box-border"
-                onChange={(e) => setCreatedAt(e.target.value)}
-                disabled={!editForm}
-              />
-            </div>
-          </div>
-
+          <label htmlFor="due">Due Date</label>
+          <input
+            id="due"
+            type="date"
+            value={due as string}
+            className="border-2 p-2 box-border"
+            onChange={(e) => setDue(e.target.value)}
+            required
+          />
           <label htmlFor="category">Choose the Category</label>
           <select
             id="category"
@@ -173,7 +156,6 @@ const TaskForm: React.FC<ITaskProps> = ({
             value={status}
             className="w-full border-2 p-2 box-border"
             onChange={(e) => setStatus(e.target.value as Status)}
-            disabled={!editForm}
           >
             <option value="" disabled>
               Status
@@ -186,17 +168,15 @@ const TaskForm: React.FC<ITaskProps> = ({
           <div className="w-full flex items-center justify-between">
             <Button
               variant="dark"
-              text={editForm ? "Edit Task" : "Add New Task"}
-              type="submit"
-            />
-            <Button
-              variant="dark"
-              text="Close"
               onClick={() => {
                 setIsShowedTaskForm(!isShowedTaskForm);
               }}
-              className="bg-red-700"
-            />
+            >
+              Close
+            </Button>
+            <Button variant="dark" type="submit" className="bg-green-900">
+              {editForm ? "Edit Task" : "Add New Task"}
+            </Button>
           </div>
         </form>
       </div>

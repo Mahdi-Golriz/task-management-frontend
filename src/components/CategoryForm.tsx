@@ -45,16 +45,19 @@ const CategoryForm: React.FC<IProps> = ({
             placeholder="title..."
           />
           <div className="flex w-full items-center justify-between">
-            <Button text="Add new category" variant="dark" type="submit" />
+            <Button variant="dark" type="submit">
+              Add new category
+            </Button>
             <Button
-              text="Close"
               onClick={(e) => {
                 e.preventDefault();
                 setIsShowedCategoryForm(!isShowedCategoryForm);
               }}
               variant="dark"
               className="bg-red-700"
-            />
+            >
+              Close
+            </Button>
           </div>
         </form>
       </div>

@@ -1,40 +1,32 @@
-import { useState } from "react";
 import { useCategories } from "../context/categoriesContext";
 import { ICategory } from "../services/apiCategories";
 import { Status } from "./TaskForm";
 import { useTasks } from "../context/tasksContext";
+import { useState } from "react";
+import { GetTasks } from "../services/apiTasks";
 
 const Form: React.FC = () => {
+  const [filtersAndSortOptions, setFiltersAndSortOptions] = useState<GetTasks>(
+    {}
+  );
   enum Sorted {
     sortedBydueDate = "sortedBydueDate",
     sortedBycreationDate = "sortedBycreationDate",
-    initialOrder = "initialOrder",
+    initialOrder = "",
   }
 
-  const [filters, setFilters] = useState<{
-    category_id?: string;
-    status?: string;
-    search?: string;
-  }>({});
-
-  const [sortedBy, setSortedBy] = useState<Sorted>(Sorted.initialOrder);
-
-  const { fetchTasks, sortTasks } = useTasks();
+  const { fetchTasks } = useTasks();
   const categories = useCategories();
 
-  const handleFilterChange = (key: string, value: string) => {
-    const updatedFilters = { ...filters, [key]: value || "" };
-    setFilters(updatedFilters);
-    fetchTasks(updatedFilters);
-  };
+  const handleFilterAndSortTasks = (key: string, value: string) => {
+    const updatedFiltersAndSort = {
+      ...filtersAndSortOptions,
+      [key]: value || "",
+    };
 
-  const handleSortTasks = (sortBy: Sorted) => {
-    if (sortBy === Sorted.initialOrder) {
-      fetchTasks(filters); // Re-fetch tasks to reset the order
-    } else {
-      sortTasks(sortBy); // Use the current state for other sorts
-    }
-    setSortedBy(sortBy); // Update the sort type in the component
+    setFiltersAndSortOptions(updatedFiltersAndSort);
+    fetchTasks(updatedFiltersAndSort);
+    console.log(updatedFiltersAndSort);
   };
 
   return (
@@ -43,13 +35,13 @@ const Form: React.FC = () => {
         type="text"
         placeholder="Quick Search"
         className="p-2 m-1 box-border border rounded-lg text-xs font-semibold"
-        onChange={(e) => handleFilterChange("search", e.target.value)}
+        onChange={(e) => handleFilterAndSortTasks("search", e.target.value)}
       />
       <div className="flex">
         <select
-          value={filters.category_id || ""}
+          value={filtersAndSortOptions.category_id || ""}
           onChange={(e) => {
-            handleFilterChange("category_id", e.target.value);
+            handleFilterAndSortTasks("category_id", e.target.value);
           }}
           className="p-2 m-1 box-border border rounded-lg text-xs font-semibold"
         >
@@ -61,9 +53,9 @@ const Form: React.FC = () => {
           ))}
         </select>
         <select
-          value={filters.status || ""}
+          value={filtersAndSortOptions.status || ""}
           onChange={(e) => {
-            handleFilterChange("status", e.target.value);
+            handleFilterAndSortTasks("status", e.target.value);
           }}
           className="flex items-center justify-center gap-1 p-2 m-1 box-border border rounded-lg text-xs font-semibold"
         >
@@ -74,9 +66,9 @@ const Form: React.FC = () => {
         </select>
 
         <select
-          value={sortedBy}
+          value={filtersAndSortOptions.sort || ""}
           onChange={(e) => {
-            handleSortTasks(e.target.value as Sorted);
+            handleFilterAndSortTasks("sort", e.target.value as Sorted);
           }}
           className="flex items-center justify-center gap-1 p-2 m-1 box-border border rounded-lg text-xs font-semibold"
         >

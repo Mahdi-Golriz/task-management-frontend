@@ -15,6 +15,13 @@ export interface ITask {
   createdAt: string;
 }
 
+export interface GetTasks {
+  category_id?: string;
+  status?: string;
+  search?: string;
+  sort?: string;
+}
+
 export const createTask: Function = async (task: ITask): Promise<ITask> => {
   const res = await fetch(API_URL, {
     method: "POST",
@@ -43,13 +50,10 @@ export const createTask: Function = async (task: ITask): Promise<ITask> => {
 //   return data;
 // };
 
-export const getTasks = async (filters: {
-  category_id?: string;
-  status?: string;
-  search?: string;
-}): Promise<ITask[]> => {
+// TODO: using interface for filter
+export const getTasks = async (filtersAndSort: GetTasks): Promise<ITask[]> => {
   const query = new URLSearchParams(
-    filters as Record<string, string>
+    filtersAndSort as Record<string, string>
   ).toString();
 
   const res = await fetch(`${API_URL}?${query}`);

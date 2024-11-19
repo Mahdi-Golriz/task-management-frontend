@@ -1,19 +1,20 @@
-import { IconType } from "react-icons";
 import { cn } from "../utils/cn";
+import { ReactNode } from "react";
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  text?: string;
-  Icon?: IconType;
+  children?: ReactNode;
+  icon?: ReactNode;
   variant: "dark" | "light" | "action";
 }
 
 const Button: React.FC<IProps> = ({
-  text,
-  Icon,
+  children,
+  icon,
   className,
   variant,
   ...props
 }) => {
+  const Icon = () => icon;
   const commpmStyles =
     "flex items-center justify-center gap-1 p-2 m-1 box-border border rounded-lg text-xs font-semibold";
 
@@ -25,8 +26,8 @@ const Button: React.FC<IProps> = ({
 
   const content = (
     <>
-      {Icon && <span>{<Icon />}</span>}
-      {text}
+      {icon && <span>{<Icon />}</span>}
+      <span>{children}</span>
     </>
   );
 

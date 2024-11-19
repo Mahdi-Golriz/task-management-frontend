@@ -4,7 +4,11 @@ export interface ICategory {
   title: string;
   _id: string;
 }
-
+/**
+ * This method is responsible for creating categories
+ * @param category XMLDocument
+ * @returns Promise<ICategory>
+ */
 export const createCategory: Function = async (
   category: ICategory
 ): Promise<ICategory> => {

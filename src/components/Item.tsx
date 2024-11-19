@@ -55,20 +55,21 @@ const Item: React.FC<ItemProps> = ({ task }) => {
               {description || "There is no detail to show"}
             </p>
             <Button
-              text="Close"
               variant="dark"
               onClick={() => {
                 setIsShowedDescription(!isShowedDescription);
               }}
               className="bg-red-700 mx-auto"
-            ></Button>
+            >
+              Close
+            </Button>
           </div>
         </div>
       )}
 
       <div className="w-1/20">
         <Button
-          Icon={MdDelete}
+          icon={<MdDelete />}
           variant="action"
           onClick={handleDeleteClick}
           className="text-lg p-0 m-0"
@@ -76,7 +77,7 @@ const Item: React.FC<ItemProps> = ({ task }) => {
       </div>
       <div className="w-1/20">
         <Button
-          Icon={FaEdit}
+          icon={<FaEdit />}
           variant="action"
           onClick={handleEditClick}
           className="text-lg p-0 m-0"

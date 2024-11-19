@@ -5,28 +5,17 @@ import {
   useEffect,
   useReducer,
 } from "react";
-import { getTasks, ITask } from "../services/apiTasks";
+import { GetTasks, getTasks, ITask } from "../services/apiTasks";
 
 interface TasksContextProps {
   tasks: ITask[];
   addTask: (task: ITask) => void;
   removeTask: (taskId: string) => void;
   updateTask: (task: ITask) => void;
-  fetchTasks: (filters: {
-    category_id?: string;
-    status?: string;
-    search?: string;
-  }) => void;
-  sortTasks: (sortedBy: Sorted) => void;
+  fetchTasks: (filters: GetTasks) => void;
 }
 interface TasksProviderProps {
   children: ReactNode;
-}
-
-enum Sorted {
-  sortedBydueDate = "sortedBydueDate",
-  sortedBycreationDate = "sortedBycreationDate",
-  initialOrder = "initialOrder",
 }
 
 interface TasksState {
@@ -37,8 +26,7 @@ type Action =
   | { type: "tasks/loaded"; payload: ITask[] }
   | { type: "tasks/added"; payload: ITask }
   | { type: "tasks/removed"; payload: string }
-  | { type: "tasks/updated"; payload: ITask }
-  | { type: "tasks/sorted"; payload: Sorted };
+  | { type: "tasks/updated"; payload: ITask };
 
 const TasksContext = createContext<TasksContextProps | undefined>(undefined);
 
@@ -68,22 +56,6 @@ const reducer = (state: TasksState, action: Action) => {
         ),
       };
 
-    case "tasks/sorted":
-      return {
-        ...state,
-        tasks:
-          action.payload === Sorted.sortedBycreationDate
-            ? state.tasks.sort(
-                (a: ITask, b: ITask) =>
-                  new Date(a.createdAt).getTime() -
-                  new Date(b.createdAt).getTime()
-              )
-            : state.tasks.sort(
-                (a: ITask, b: ITask) =>
-                  new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
-              ),
-      };
-
     default:
       throw new Error("Action unknown!");
   }
@@ -92,12 +64,8 @@ const reducer = (state: TasksState, action: Action) => {
 const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
   const [{ tasks }, dispatch] = useReducer(reducer, initialState);
 
-  const fetchTasks = async (filters: {
-    category_id?: string;
-    status?: string;
-    search?: string;
-  }) => {
-    const data = await getTasks(filters);
+  const fetchTasks = async (filtersAndSort: GetTasks) => {
+    const data = await getTasks(filtersAndSort);
     dispatch({ type: "tasks/loaded", payload: data });
   };
 
@@ -117,13 +85,15 @@ const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
     dispatch({ type: "tasks/updated", payload: task });
   };
 
-  const sortTasks = (sortedBy: Sorted) => {
-    dispatch({ type: "tasks/sorted", payload: sortedBy });
-  };
-
   return (
     <TasksContext.Provider
-      value={{ tasks, addTask, removeTask, updateTask, fetchTasks, sortTasks }}
+      value={{
+        tasks,
+        addTask,
+        removeTask,
+        updateTask,
+        fetchTasks,
+      }}
     >
       {children}
     </TasksContext.Provider>

@@ -19,16 +19,17 @@ const Header: React.FC = (): ReactElement => {
       </h2>
       <div className="flex">
         <Button
-          Icon={theme === "light" ? MdOutlineWbSunny : FaMoon}
+          icon={theme === "light" ? <MdOutlineWbSunny /> : <FaMoon />}
           onClick={toggleTheme}
           variant="light"
         />
         <Button
-          text="New Category"
-          Icon={FiPlus}
+          icon={<FiPlus />}
           onClick={() => setIsShowedCategoryForm(!isShowedCategoryForm)}
           variant="light"
-        />
+        >
+          New Category
+        </Button>
         {isShowedCategoryForm && (
           <CategoryForm
             setIsShowedCategoryForm={setIsShowedCategoryForm}
@@ -36,11 +37,12 @@ const Header: React.FC = (): ReactElement => {
           />
         )}
         <Button
-          text="New Task"
-          Icon={FiPlus}
+          icon={<FiPlus />}
           onClick={() => setIsShowedTaskForm(!isShowedTaskForm)}
           variant="light"
-        />
+        >
+          New Task
+        </Button>
         {isShowedTaskForm && (
           <TaskForm
             isShowedTaskForm={isShowedTaskForm}
