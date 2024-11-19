@@ -1,41 +1,47 @@
+import { useEffect, useState } from "react";
 import { useTasks } from "../context/tasksContext";
-import { ITask } from "../services/apiTasks";
+import { countTasks, ITask } from "../services/apiTasks";
+
+export interface TaskStat {
+  total: number;
+  planned: number;
+  pending: number;
+  done: number;
+}
 
 const Footer: React.FC = () => {
-  const { tasks } = useTasks();
+  const [stats, setStats] = useState<TaskStat>({
+    total: 0,
+    planned: 0,
+    pending: 0,
+    done: 0,
+  });
 
-  const totalNumTasks = tasks.length;
-  const doneTasks = tasks.filter(
-    (task: ITask) => task.status === "Done"
-  ).length;
+  useEffect(() => {
+    const getStats = async () => {
+      const data = await countTasks();
+      setStats(data);
+    };
 
-  const pendingTasks = tasks.filter(
-    (task: ITask) => task.status === "Pending"
-  ).length;
+    getStats();
+  }, []);
 
-  const plannedTasks = tasks.filter(
-    (task: ITask) => task.status === "Planned"
-  ).length;
-
-  const donePercentage = Math.round((doneTasks / totalNumTasks) * 100);
-  const pendingPercentage = Math.round((pendingTasks / totalNumTasks) * 100);
-  const plannedPercentage = Math.round((plannedTasks / totalNumTasks) * 100);
-
-  if (!totalNumTasks) {
+  const donePercentage = Math.round((stats.done / stats.total) * 100);
+  const pendingPercentage = Math.round((stats.pending / stats.total) * 100);
+  const plannedPercentage = Math.round((stats.planned / stats.total) * 100);
+  if (!stats) {
     return (
       <p className="w-full justify-around flex mt-auto border p-2 box-border text-xs dark:text-white">
-        Start adding your tasks
+        Loading task statistics...
       </p>
     );
   }
 
   return (
     <div className="w-full justify-around flex mt-auto border p-2 box-border text-xs dark:text-white">
-      <p>Total number of tasks: {totalNumTasks}</p>
+      <p>Total number of tasks:{stats.total}</p>
       <p>
-        {donePercentage === 100
-          ? "Congrats! You have done all your tasks."
-          : `You have done ${donePercentage}% of your tasks. ${pendingPercentage}% of your tasks are pending and also ${plannedPercentage}% of your tasks were planned to be done!`}
+        {`You have done the ${donePercentage}% of all tasks, ${pendingPercentage}% of tasks are pending to done and ${plannedPercentage}% of tasks were planned to done later`}
       </p>
     </div>
   );

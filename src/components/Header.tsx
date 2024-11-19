@@ -1,7 +1,7 @@
 import { ReactElement, useState } from "react";
 import Button from "./Button";
 import { FiPlus } from "react-icons/fi";
-import CategoryForm from "./CategoryForm";
+import CategoryForm from "./CategoryFoem";
 import TaskForm from "./TaskForm";
 import { useTheme } from "../context/themeContext";
 import { FaMoon } from "react-icons/fa6";

@@ -5,14 +5,14 @@ import {
   useEffect,
   useReducer,
 } from "react";
-import { GetTasks, getTasks, ITask } from "../services/apiTasks";
+import { FilterAndSortOtions, getTasks, ITask } from "../services/apiTasks";
 
 interface TasksContextProps {
   tasks: ITask[];
   addTask: (task: ITask) => void;
   removeTask: (taskId: string) => void;
   updateTask: (task: ITask) => void;
-  fetchTasks: (filters: GetTasks) => void;
+  fetchTasks: (filters: FilterAndSortOtions) => void;
 }
 interface TasksProviderProps {
   children: ReactNode;
@@ -64,7 +64,7 @@ const reducer = (state: TasksState, action: Action) => {
 const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
   const [{ tasks }, dispatch] = useReducer(reducer, initialState);
 
-  const fetchTasks = async (filtersAndSort: GetTasks) => {
+  const fetchTasks = async (filtersAndSort: FilterAndSortOtions) => {
     const data = await getTasks(filtersAndSort);
     dispatch({ type: "tasks/loaded", payload: data });
   };

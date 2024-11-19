@@ -23,8 +23,10 @@ const Item: React.FC<ItemProps> = ({ task }) => {
 
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent description toggle
-    deleteTask(task._id);
-    removeTask(task._id);
+    if (confirm("Are you sure!?") == true) {
+      deleteTask(task._id);
+      removeTask(task._id);
+    }
   };
 
   const handleEditClick = (e: React.MouseEvent) => {

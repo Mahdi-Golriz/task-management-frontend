@@ -3,12 +3,11 @@ import { ICategory } from "../services/apiCategories";
 import { Status } from "./TaskForm";
 import { useTasks } from "../context/tasksContext";
 import { useState } from "react";
-import { GetTasks } from "../services/apiTasks";
+import { FilterAndSortOtions } from "../services/apiTasks";
 
 const Form: React.FC = () => {
-  const [filtersAndSortOptions, setFiltersAndSortOptions] = useState<GetTasks>(
-    {}
-  );
+  const [filtersAndSortOptions, setFiltersAndSortOptions] =
+    useState<FilterAndSortOtions>({});
   enum Sorted {
     sortedBydueDate = "sortedBydueDate",
     sortedBycreationDate = "sortedBycreationDate",

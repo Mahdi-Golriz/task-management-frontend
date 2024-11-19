@@ -1,41 +1,29 @@
+import { fetcher } from "../utils/fetcher";
+
 const API_URL = "http://localhost:5555/api/categories";
 
 export interface ICategory {
   title: string;
-  _id: string;
+  _id?: string;
 }
+
 /**
  * This method is responsible for creating categories
- * @param category XMLDocument
+ * @param category ICategory
  * @returns Promise<ICategory>
  */
-export const createCategory: Function = async (
-  category: ICategory
-): Promise<ICategory> => {
-  const res = await fetch(API_URL, {
+export const createCategory = async (category: ICategory) => {
+  return await fetcher<ICategory>({
+    path: "/categories",
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(category),
-    // mode: "no-cors", // Testing only
+    body: category,
   });
-
-  if (!res.ok) {
-    throw new Error(`Failed to create category: ${res.statusText}`);
-  }
-
-  const data: ICategory = await res.json();
-  return data;
 };
 
-export const getCategories: Function = async (): Promise<ICategory[]> => {
-  const res = await fetch(API_URL);
-
-  if (!res.ok) {
-    throw new Error(`Failed to create category: ${res.statusText}`);
-  }
-
-  const data: ICategory[] = await res.json();
-  return data;
+/**
+ * This method is responsible for fetching categories
+ * @returns ICategory[]
+ */
+export const getCategories = async () => {
+  return await fetcher<ICategory[]>({ path: "/categories", method: "GET" });
 };
