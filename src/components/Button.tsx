@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
   icon?: ReactNode;
-  variant: "dark" | "light" | "action";
+  variant: "dark" | "light" | "iconOnly";
 }
 
 const Button: React.FC<IProps> = ({
@@ -21,7 +21,7 @@ const Button: React.FC<IProps> = ({
   const variantStyles = {
     dark: "bg-slate-800 text-white",
     light: "bg-white",
-    action: "p-1 border-none",
+    iconOnly: "p-1 border-none", // for cases like delete and edit icon in each task item
   };
 
   const content = (
@@ -31,6 +31,9 @@ const Button: React.FC<IProps> = ({
     </>
   );
 
+  // using cn to prevent from any conflict between tailwind classes
+  // for each button we have the common styles and then based on use case we choose the variant of button
+  // and in required situations we can use className property to customize the button
   return (
     <button
       className={cn(commpmStyles, variantStyles[variant], className)}

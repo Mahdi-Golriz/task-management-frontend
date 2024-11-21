@@ -30,6 +30,9 @@ type Action =
 
 const TasksContext = createContext<TasksContextProps | undefined>(undefined);
 
+// use a combination of useReducer and useContext to manage the tasks
+// it uses the getTasks method to load the tasks based on filters
+// other actions are implemented to keep the UI in sync with database after creating, deleting and editing a task
 const initialState: TasksState = { tasks: [] };
 
 const reducer = (state: TasksState, action: Action) => {

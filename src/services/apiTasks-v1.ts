@@ -1,5 +1,3 @@
-import { fetcher } from "../utils/fetcher";
-
 const API_URL = "http://localhost:5555/api/tasks";
 
 type Category_id = {
@@ -17,7 +15,7 @@ export interface ITask {
   createdAt: string;
 }
 
-export interface FilterAndSortOtions {
+export interface FiltersAndSortOtions {
   category_id?: string;
   status?: string;
   search?: string;
@@ -42,7 +40,7 @@ export const createTask: Function = async (task: ITask): Promise<ITask> => {
 
 // TODO: using interface for filter
 export const getTasks = async (
-  filtersAndSort: FilterAndSortOtions
+  filtersAndSort: FiltersAndSortOtions
 ): Promise<ITask[]> => {
   const query = new URLSearchParams(
     filtersAndSort as Record<string, string>

@@ -12,11 +12,14 @@ interface ItemProps {
   task: ITask;
 }
 
+// Each Item is a row in the table to display a task, it is interactieve
 const Item: React.FC<ItemProps> = ({ task }) => {
-  const [isShowedDescription, setIsShowedDescription] = useState(false);
-  const [isShowedEditForm, setIsShowedEditForm] = useState(false);
-  const { title, category_id, description, dueDate, status, createdAt } = task;
-  const { removeTask } = useTasks();
+  const [isShowedDescription, setIsShowedDescription] = useState(false); // description of task is showed by clicking on it as a modal
+  const [isShowedEditForm, setIsShowedEditForm] = useState(false); // task can be edited by a modal form (same as creating)
+  const { title, category_id, description, dueDate, status, createdAt } = task; // task properties
+  const { removeTask } = useTasks(); // task can be deleted
+
+  // we need to get categories from our database to map the category_id of each task to its title
   const categories: ICategory[] = useCategories();
   const category =
     categories.find((cat) => cat._id === category_id)?.title ?? "No Category";
@@ -24,8 +27,8 @@ const Item: React.FC<ItemProps> = ({ task }) => {
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent description toggle
     if (confirm("Are you sure!?") == true) {
-      deleteTask(task._id);
-      removeTask(task._id);
+      deleteTask(task._id); // delete task from database
+      removeTask(task._id); // delete task from tasks state stored in tasksContext to update the UI
     }
   };
 
@@ -72,7 +75,7 @@ const Item: React.FC<ItemProps> = ({ task }) => {
       <div className="w-1/20">
         <Button
           icon={<MdDelete />}
-          variant="action"
+          variant="iconOnly"
           onClick={handleDeleteClick}
           className="text-lg p-0 m-0"
         />
@@ -80,7 +83,7 @@ const Item: React.FC<ItemProps> = ({ task }) => {
       <div className="w-1/20">
         <Button
           icon={<FaEdit />}
-          variant="action"
+          variant="iconOnly"
           onClick={handleEditClick}
           className="text-lg p-0 m-0"
         />

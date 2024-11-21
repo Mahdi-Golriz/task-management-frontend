@@ -6,7 +6,7 @@ export interface ICategory {
   title: string;
   _id?: string;
 }
-
+//TODO
 /**
  * This method is responsible for creating categories
  * @param category ICategory

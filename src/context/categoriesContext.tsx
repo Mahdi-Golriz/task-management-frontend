@@ -7,6 +7,8 @@ import React, {
 } from "react";
 import { getCategories, ICategory } from "../services/apiCategories";
 
+// This context is used to share the available categories between different components
+// it load the categories through an api
 const CategoriesContext = createContext<ICategory[]>([]);
 
 interface CategoriesProviderProps {

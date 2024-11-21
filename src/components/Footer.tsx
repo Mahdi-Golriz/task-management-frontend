@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { useTasks } from "../context/tasksContext";
 import { countTasks, ITask } from "../services/apiTasks";
 
-export interface TaskStat {
+export interface TaskStats {
   total: number;
   planned: number;
   pending: number;
   done: number;
 }
 
+// create a footer to display a summery of tasks' information including the total number of tasks and number of tasks categorized by predefined statuses
 const Footer: React.FC = () => {
-  const [stats, setStats] = useState<TaskStat>({
+  const [stats, setStats] = useState<TaskStats>({
     total: 0,
     planned: 0,
     pending: 0,
@@ -19,7 +20,7 @@ const Footer: React.FC = () => {
 
   useEffect(() => {
     const getStats = async () => {
-      const data = await countTasks();
+      const data = await countTasks(); // this is an api calculating the tasks' statistics and sending then as an array
       setStats(data);
     };
 

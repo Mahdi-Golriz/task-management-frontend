@@ -21,11 +21,13 @@ interface ThemeProviderProps {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+  // use the a custom hook to load the perefered theme from localStorage or set it dark if it's not set yet
   const [theme, setTheme] = useLocalStorageState({
     initialState: "dark",
     key: "theme",
   });
 
+  // set the theme dark as default or the stored theme in local storage if it's set before
   useEffect(() => {
     // const preferedTheme = window.matchMedia(
     //   "(prefers-color-scheme: dark)"

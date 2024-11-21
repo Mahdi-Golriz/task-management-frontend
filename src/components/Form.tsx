@@ -5,27 +5,30 @@ import { useTasks } from "../context/tasksContext";
 import { useState } from "react";
 import { FilterAndSortOtions } from "../services/apiTasks";
 
+enum SortOptions {
+  sortedBydueDate = "sortedBydueDate",
+  sortedBycreationDate = "sortedBycreationDate",
+  initialOrder = "",
+}
+
+// form section in the UI is used to search, filter and sort the tasks using backend api
 const Form: React.FC = () => {
-  const [filtersAndSortOptions, setFiltersAndSortOptions] =
+  const [filtersAndSort, setFiltersAndSort] =
+    // store the selected search, filter and sort to send them as the query string to backend with fetchTasks method
     useState<FilterAndSortOtions>({});
-  enum Sorted {
-    sortedBydueDate = "sortedBydueDate",
-    sortedBycreationDate = "sortedBycreationDate",
-    initialOrder = "",
-  }
 
   const { fetchTasks } = useTasks();
-  const categories = useCategories();
+  const categories = useCategories(); // sort by categories
 
   const handleFilterAndSortTasks = (key: string, value: string) => {
     const updatedFiltersAndSort = {
-      ...filtersAndSortOptions,
+      ...filtersAndSort,
       [key]: value || "",
     };
 
-    setFiltersAndSortOptions(updatedFiltersAndSort);
+    setFiltersAndSort(updatedFiltersAndSort);
+    // fetchTasks method get this parameter and works based on filter, sort and search done in backend
     fetchTasks(updatedFiltersAndSort);
-    console.log(updatedFiltersAndSort);
   };
 
   return (
@@ -38,7 +41,7 @@ const Form: React.FC = () => {
       />
       <div className="flex">
         <select
-          value={filtersAndSortOptions.category_id || ""}
+          value={filtersAndSort.category_id || ""}
           onChange={(e) => {
             handleFilterAndSortTasks("category_id", e.target.value);
           }}
@@ -52,7 +55,7 @@ const Form: React.FC = () => {
           ))}
         </select>
         <select
-          value={filtersAndSortOptions.status || ""}
+          value={filtersAndSort.status || ""}
           onChange={(e) => {
             handleFilterAndSortTasks("status", e.target.value);
           }}
@@ -65,17 +68,17 @@ const Form: React.FC = () => {
         </select>
 
         <select
-          value={filtersAndSortOptions.sort || ""}
+          value={filtersAndSort.sort || ""}
           onChange={(e) => {
-            handleFilterAndSortTasks("sort", e.target.value as Sorted);
+            handleFilterAndSortTasks("sort", e.target.value as SortOptions);
           }}
           className="flex items-center justify-center gap-1 p-2 m-1 box-border border rounded-lg text-xs font-semibold"
         >
-          <option value={Sorted.initialOrder}>Default Sort</option>
-          <option value={Sorted.sortedBycreationDate}>
+          <option value={SortOptions.initialOrder}>Default Sort</option>
+          <option value={SortOptions.sortedBycreationDate}>
             Sort by Creation Date
           </option>
-          <option value={Sorted.sortedBydueDate}>Sort by Due Date</option>
+          <option value={SortOptions.sortedBydueDate}>Sort by Due Date</option>
         </select>
       </div>
     </div>

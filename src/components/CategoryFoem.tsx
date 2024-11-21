@@ -2,20 +2,21 @@ import { useState } from "react";
 import Button from "./Button";
 import { createCategory, getCategories } from "../services/apiCategories";
 
-interface IProps {
+interface CategoryFormProps {
   setIsShowedCategoryForm: (value: boolean) => void;
   isShowedCategoryForm: boolean;
 }
 
-const CategoryForm: React.FC<IProps> = ({
-  setIsShowedCategoryForm,
+// A modal component to add new categories by a form
+const CategoryForm: React.FC<CategoryFormProps> = ({
   isShowedCategoryForm,
+  setIsShowedCategoryForm,
 }) => {
   const [categoryTitle, setCategoryTitle] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newCategory = { title: categoryTitle };
+    const newCategory = { title: categoryTitle }; // title is recieved by the form
 
     try {
       await createCategory(newCategory);
@@ -24,7 +25,7 @@ const CategoryForm: React.FC<IProps> = ({
       console.error("Failed to create category:", error);
       alert("Category couldn't added");
     } finally {
-      setIsShowedCategoryForm(!isShowedCategoryForm);
+      setIsShowedCategoryForm(!isShowedCategoryForm); // to close the modal after adding or recieving error
     }
   };
 
@@ -43,6 +44,7 @@ const CategoryForm: React.FC<IProps> = ({
             value={categoryTitle}
             onChange={(e) => setCategoryTitle(e.target.value)}
             placeholder="title..."
+            required
           />
           <div className="flex w-full items-center justify-between">
             <Button variant="dark" type="submit">

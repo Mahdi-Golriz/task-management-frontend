@@ -6,7 +6,7 @@ import { useCategories } from "../context/categoriesContext";
 import { useTasks } from "../context/tasksContext";
 import type { ITask } from "../services/apiTasks";
 
-interface ITaskProps {
+interface TaskFormProps {
   isShowedTaskForm: boolean;
   setIsShowedTaskForm: (value: boolean) => void;
   editForm?: boolean;
@@ -19,12 +19,15 @@ export enum Status {
   Done = "Done",
 }
 
-const TaskForm: React.FC<ITaskProps> = ({
+// TaskForm is used to create or edit a task
+// editForm prop determine the purpose and type of action for the form
+const TaskForm: React.FC<TaskFormProps> = ({
   isShowedTaskForm,
   setIsShowedTaskForm,
-  editForm = false,
+  editForm = false, // default value
   task,
 }) => {
+  // different initial values for different form  (create task or edit task)
   const [title, setTitle] = useState(task?.title || "");
   const [description, setDescription] = useState(task?.description || "");
   const [due, setDue] = useState(
@@ -41,8 +44,9 @@ const TaskForm: React.FC<ITaskProps> = ({
   );
 
   const categories: ICategory[] = useCategories();
-  const { addTask, updateTask, fetchTasks } = useTasks();
+  const { addTask, updateTask } = useTasks();
 
+  // This method handles creating the task
   const createNewTask: Function = async () => {
     const newTask = {
       title,
@@ -52,8 +56,8 @@ const TaskForm: React.FC<ITaskProps> = ({
     };
 
     try {
-      const createdTask = await createTask(newTask);
-      addTask(createdTask);
+      const createdTask = await createTask(newTask); // creates the task in database
+      addTask(createdTask); // add the created task to tasks state stored in tasksContext to update the UI and keep in sync it with database
       alert("new task was added");
     } catch (error) {
       console.error("Failed to create task:", error);
@@ -62,6 +66,7 @@ const TaskForm: React.FC<ITaskProps> = ({
     }
   };
 
+  // This method handles editing the task
   const editAvailableTask: Function = async () => {
     if (!task) return;
 
@@ -76,8 +81,8 @@ const TaskForm: React.FC<ITaskProps> = ({
     };
 
     try {
-      const editedTask = await editTask(edition);
-      updateTask(editedTask);
+      const editedTask = await editTask(edition); // edits the task in database
+      updateTask(editedTask); // edit the task in tasks state stored in tasksContext to update the UI and keep in sync it with database
       alert("The task was edited");
     } catch (error) {
       console.error("Failed to eidt task:", error);
@@ -86,6 +91,7 @@ const TaskForm: React.FC<ITaskProps> = ({
     }
   };
 
+  // create or edit task based on editForm prop
   const handleSubmitTaskForm = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editForm) {
