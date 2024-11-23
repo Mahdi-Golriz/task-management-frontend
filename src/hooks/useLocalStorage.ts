@@ -5,7 +5,7 @@ interface useLocalStorageStateProps {
   key: string;
 }
 
-export const useLocalStorageState = ({
+const useLocalStorageState = ({
   initialState,
   key,
 }: useLocalStorageStateProps) => {
@@ -20,3 +20,5 @@ export const useLocalStorageState = ({
 
   return [value, setValue];
 };
+
+export default useLocalStorageState;

@@ -1,34 +1,24 @@
-import { useCategories } from "../context/categoriesContext";
-import { ICategory } from "../services/apiCategories";
-import { Status } from "./TaskForm";
-import { useTasks } from "../context/tasksContext";
 import { useState } from "react";
-import { FilterAndSortOtions } from "../services/apiTasks";
+import { FilterAndSortOptions, Status } from "../../models/tasks.model";
+import { useTasks } from "../../context/tasks.context";
+import { useCategories } from "../../context/categories.context";
+import { ICategory } from "../../models/categories.model";
 
 enum SortOptions {
-  sortedBydueDate = "sortedBydueDate",
-  sortedBycreationDate = "sortedBycreationDate",
+  sortedByDueDate = "sortedByDueDate",
+  sortedByCreationDate = "sortedByCreationDate",
   initialOrder = "",
 }
 
 // form section in the UI is used to search, filter and sort the tasks using backend api
 const Form: React.FC = () => {
-  const [filtersAndSort, setFiltersAndSort] =
-    // store the selected search, filter and sort to send them as the query string to backend with fetchTasks method
-    useState<FilterAndSortOtions>({});
+  // store the selected search, filter and sort to send them as the query string to backend with fetchTasks method
 
-  const { fetchTasks } = useTasks();
-  const categories = useCategories(); // sort by categories
+  const { fetchTasks, filtersAndSort, updateFiltersAndSort } = useTasks();
+  const { categories } = useCategories(); // sort by categories
 
   const handleFilterAndSortTasks = (key: string, value: string) => {
-    const updatedFiltersAndSort = {
-      ...filtersAndSort,
-      [key]: value || "",
-    };
-
-    setFiltersAndSort(updatedFiltersAndSort);
-    // fetchTasks method get this parameter and works based on filter, sort and search done in backend
-    fetchTasks(updatedFiltersAndSort);
+    updateFiltersAndSort(key as keyof FilterAndSortOptions, value);
   };
 
   return (
@@ -75,10 +65,10 @@ const Form: React.FC = () => {
           className="flex items-center justify-center gap-1 p-2 m-1 box-border border rounded-lg text-xs font-semibold"
         >
           <option value={SortOptions.initialOrder}>Default Sort</option>
-          <option value={SortOptions.sortedBycreationDate}>
+          <option value={SortOptions.sortedByCreationDate}>
             Sort by Creation Date
           </option>
-          <option value={SortOptions.sortedBydueDate}>Sort by Due Date</option>
+          <option value={SortOptions.sortedByDueDate}>Sort by Due Date</option>
         </select>
       </div>
     </div>

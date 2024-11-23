@@ -1,39 +1,50 @@
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import Button from "./Button";
-import { deleteTask, ITask } from "../services/apiTasks";
+import { useTasks } from "../../context/tasks.context";
+import { useCategories } from "../../context/categories.context";
+import { ICategory } from "../../models/categories.model";
 import { useState } from "react";
-import { useTasks } from "../context/tasksContext";
-import { useCategories } from "../context/categoriesContext";
-import { ICategory } from "../services/apiCategories";
-import TaskForm from "./TaskForm";
+import { ITask } from "../../models/tasks.model";
+import Button from "../button";
+import TaskForm from "../../forms/task-form";
+import { deleteTask } from "../../services/apiTasks";
 
 interface ItemProps {
   task: ITask;
 }
 
-// Each Item is a row in the table to display a task, it is interactieve
+// Each Item is a row in the table to display a task, it is interactive
 const Item: React.FC<ItemProps> = ({ task }) => {
-  const [isShowedDescription, setIsShowedDescription] = useState(false); // description of task is showed by clicking on it as a modal
-  const [isShowedEditForm, setIsShowedEditForm] = useState(false); // task can be edited by a modal form (same as creating)
-  const { title, category_id, description, dueDate, status, createdAt } = task; // task properties
-  const { removeTask } = useTasks(); // task can be deleted
+  // description of task is showed by clicking on it as a modal
+  const [isShowedDescription, setIsShowedDescription] = useState(false);
+  // task can be edited by a modal form (same as creating)
+  const [isShowedEditForm, setIsShowedEditForm] = useState(false);
+  // task properties
+  const { title, category_id, description, dueDate, status, createdAt } = task;
+  // task can be deleted
+  const { removeTask } = useTasks();
 
   // we need to get categories from our database to map the category_id of each task to its title
-  const categories: ICategory[] = useCategories();
+  const { categories } = useCategories();
+
   const category =
-    categories.find((cat) => cat._id === category_id)?.title ?? "No Category";
+    categories.find((cat: ICategory) => cat._id === category_id)?.title ??
+    "No Category";
 
   const handleDeleteClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent description toggle
+    // Prevent description toggle
+    e.stopPropagation();
     if (confirm("Are you sure!?") == true) {
-      deleteTask(task._id); // delete task from database
-      removeTask(task._id); // delete task from tasks state stored in tasksContext to update the UI
+      // delete task from database
+      deleteTask(task._id);
+      // delete task from tasks state stored in tasksContext to update the UI
+      removeTask(task._id);
     }
   };
 
   const handleEditClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent description toggle
+    // Prevent description toggle
+    e.stopPropagation();
     setIsShowedEditForm(!isShowedEditForm);
   };
 
@@ -42,7 +53,8 @@ const Item: React.FC<ItemProps> = ({ task }) => {
       className="w-full flex justify-between bg-gray-300 text-black-400 rounded p-2 box-border text-sm cursor-pointer hover:bg-slate-200 hover:ring-1"
       onClick={() => {
         if (!isShowedEditForm) {
-          setIsShowedDescription(!isShowedDescription); // Only toggle description if edit form is not shown
+          // Only toggle description if edit form is not shown
+          setIsShowedDescription(!isShowedDescription);
         }
       }}
     >

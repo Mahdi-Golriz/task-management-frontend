@@ -1,11 +1,12 @@
-import Item from "./Item";
-import TableHeader from "./TableHeader";
-import { ITask } from "../services/apiTasks";
-import { useTasks } from "../context/tasksContext";
+import { useTasks } from "../../context";
+import { ITask } from "../../models/tasks.model";
+import Item from "../item";
+import TableHeader from "../table-header";
 
 // List is a table to show (render) tasks as a row
 const List: React.FC = () => {
-  const { tasks } = useTasks(); // load the taks by api handled in tasksContext
+  // load the tasks by api handled in tasksContext
+  const { tasks } = useTasks();
 
   return (
     <div className="w-full flex flex-col gap-2">

@@ -1,31 +1,38 @@
 import { useState } from "react";
-import Button from "./Button";
+import Button from "../components/button";
 import { createCategory, getCategories } from "../services/apiCategories";
+import { useCategories } from "../context";
 
-interface CategoryFormProps {
-  setIsShowedCategoryForm: (value: boolean) => void;
-  isShowedCategoryForm: boolean;
+interface ICategoryFormProps {
+  setIsShowCategoryForm: (visible: boolean) => void;
+  isShowCategoryForm: boolean;
 }
 
 // A modal component to add new categories by a form
-const CategoryForm: React.FC<CategoryFormProps> = ({
-  isShowedCategoryForm,
-  setIsShowedCategoryForm,
+const CategoryForm: React.FC<ICategoryFormProps> = ({
+  isShowCategoryForm: isShowedCategoryForm,
+  setIsShowCategoryForm: setIsShowedCategoryForm,
 }) => {
   const [categoryTitle, setCategoryTitle] = useState("");
-
+  const { addCategory } = useCategories();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newCategory = { title: categoryTitle }; // title is recieved by the form
+    // title is received by the form
+    const newCategory = { title: categoryTitle };
 
     try {
-      await createCategory(newCategory);
+      const newCategoryInDatabase = await createCategory(newCategory);
+
+      addCategory(newCategoryInDatabase);
+
       alert("new category was added");
     } catch (error) {
       console.error("Failed to create category:", error);
+
       alert("Category couldn't added");
     } finally {
-      setIsShowedCategoryForm(!isShowedCategoryForm); // to close the modal after adding or recieving error
+      // to close the modal after adding or receiving error
+      setIsShowedCategoryForm(!isShowedCategoryForm);
     }
   };
 
@@ -47,18 +54,17 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
             required
           />
           <div className="flex w-full items-center justify-between">
-            <Button variant="dark" type="submit">
-              Add new category
-            </Button>
             <Button
               onClick={(e) => {
                 e.preventDefault();
                 setIsShowedCategoryForm(!isShowedCategoryForm);
               }}
               variant="dark"
-              className="bg-red-700"
             >
               Close
+            </Button>
+            <Button variant="dark" type="submit" className="bg-green-900">
+              Add new category
             </Button>
           </div>
         </form>

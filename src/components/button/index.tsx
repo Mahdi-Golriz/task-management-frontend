@@ -1,27 +1,28 @@
-import { cn } from "../utils/cn";
+import { cn } from "../../utils/cn";
 import { ReactNode } from "react";
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
   icon?: ReactNode;
-  variant: "dark" | "light" | "iconOnly";
+  variant?: "dark" | "light" | "iconOnly";
 }
 
 const Button: React.FC<IProps> = ({
   children,
   icon,
   className,
-  variant,
+  variant = "light",
   ...props
 }) => {
   const Icon = () => icon;
-  const commpmStyles =
+  const commonStyles =
     "flex items-center justify-center gap-1 p-2 m-1 box-border border rounded-lg text-xs font-semibold";
 
   const variantStyles = {
     dark: "bg-slate-800 text-white",
     light: "bg-white",
-    iconOnly: "p-1 border-none", // for cases like delete and edit icon in each task item
+    // for cases like delete and edit icon in each task item
+    iconOnly: "p-1 border-none",
   };
 
   const content = (
@@ -36,7 +37,7 @@ const Button: React.FC<IProps> = ({
   // and in required situations we can use className property to customize the button
   return (
     <button
-      className={cn(commpmStyles, variantStyles[variant], className)}
+      className={cn(commonStyles, variantStyles[variant], className)}
       {...props}
     >
       {content}

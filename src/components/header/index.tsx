@@ -1,19 +1,21 @@
 import { ReactElement, useState } from "react";
 // import Button from "./button.tsx";
-import Button from "./Button";
+
 import { FiPlus } from "react-icons/fi";
-import CategoryForm from "./CategoryFoem";
-import TaskForm from "./TaskForm";
-import { useTheme } from "../context/themeContext";
+
 import { FaMoon } from "react-icons/fa6";
 import { MdOutlineWbSunny } from "react-icons/md";
+import { useTheme } from "../../context/theme.context";
+import Button from "../button";
+import CategoryForm from "../../forms/category-form";
+import TaskForm from "../../forms/task-form";
 
-// In Header component we hande displaying new Task and new Category modals and theme changing
+// In Header component we handle displaying new Task and new Category modals and theme changing
 const Header: React.FC = (): ReactElement => {
   const [isShowedCategoryForm, setIsShowedCategoryForm] = useState(false);
   const [isShowedTaskForm, setIsShowedTaskForm] = useState(false);
 
-  // using theme context and tailwind conditional classses to change the theme between dark and light
+  // using theme context and tailwind conditional classes to change the theme between dark and light
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -35,10 +37,10 @@ const Header: React.FC = (): ReactElement => {
           New Category
         </Button>
         {isShowedCategoryForm && (
-          // Categoryform is a modal to get the data for new category
+          // CategoryForm is a modal to get the data for new category
           <CategoryForm
-            setIsShowedCategoryForm={setIsShowedCategoryForm}
-            isShowedCategoryForm={isShowedCategoryForm}
+            setIsShowCategoryForm={setIsShowedCategoryForm}
+            isShowCategoryForm={isShowedCategoryForm}
           />
         )}
         <Button

@@ -1,11 +1,8 @@
 import React from "react";
-import Header from "./components/Header";
-import Form from "./components/Form";
-import List from "./components/List";
-import Footer from "./components/Footer";
-import { CategoriesProvider } from "./context/categoriesContext";
-import { TasksProvider } from "./context/tasksContext";
-import { ThemeProvider } from "./context/themeContext";
+import { Form, List, Footer, Header } from "./components";
+import { CategoriesProvider } from "./context/categories.context";
+import { TasksProvider } from "./context/tasks.context";
+import { ThemeProvider } from "./context/theme.context";
 
 const App: React.FC = () => {
   return (

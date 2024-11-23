@@ -17,11 +17,9 @@ const handleError = (error: any) => {
   throw new Error(error.message || "Something went wrong!");
 };
 
-const API_BASE_URL = "http://localhost:5555/api";
-
 export const fetcher = async <T>(config: FetcherConfig): Promise<T> => {
   const { path, method } = config;
-  const URL = `${API_BASE_URL}${path}`;
+  const URL = `${process.env.API_URL}${path}`;
 
   const headers: HeadersInit = {
     "Content-Type": "application/json",

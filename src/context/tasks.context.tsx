@@ -1,44 +1,57 @@
 import {
   createContext,
   ReactNode,
+  Reducer,
   useContext,
   useEffect,
   useReducer,
 } from "react";
-import { FilterAndSortOtions, getTasks, ITask } from "../services/apiTasks";
+import { getTasks } from "../services/apiTasks";
+import type { FilterAndSortOptions, ITask } from "../models/tasks.model";
 
 interface TasksContextProps {
   tasks: ITask[];
   addTask: (task: ITask) => void;
   removeTask: (taskId: string) => void;
   updateTask: (task: ITask) => void;
-  fetchTasks: (filters: FilterAndSortOtions) => void;
+  fetchTasks: (filters: FilterAndSortOptions) => Promise<void>;
+  filtersAndSort: FilterAndSortOptions;
+  updateFiltersAndSort: (
+    key: keyof FilterAndSortOptions,
+    value: string
+  ) => void;
 }
+
 interface TasksProviderProps {
   children: ReactNode;
 }
 
 interface TasksState {
   tasks: ITask[];
+  filtersAndSort: FilterAndSortOptions;
 }
 
 type Action =
   | { type: "tasks/loaded"; payload: ITask[] }
   | { type: "tasks/added"; payload: ITask }
   | { type: "tasks/removed"; payload: string }
-  | { type: "tasks/updated"; payload: ITask };
+  | { type: "tasks/updated"; payload: ITask }
+  | {
+      type: "filtersAndSort/updated";
+      payload: { key: keyof FilterAndSortOptions; value: string };
+    };
 
 const TasksContext = createContext<TasksContextProps | undefined>(undefined);
 
 // use a combination of useReducer and useContext to manage the tasks
 // it uses the getTasks method to load the tasks based on filters
 // other actions are implemented to keep the UI in sync with database after creating, deleting and editing a task
-const initialState: TasksState = { tasks: [] };
+const initialState: TasksState = { tasks: [], filtersAndSort: {} };
 
-const reducer = (state: TasksState, action: Action) => {
+const reducer: Reducer<TasksState, Action> = (state, action): TasksState => {
   switch (action.type) {
     case "tasks/loaded":
-      return { tasks: action.payload };
+      return { ...state, tasks: action.payload };
 
     case "tasks/added":
       return { ...state, tasks: [...state.tasks, action.payload] };
@@ -59,25 +72,41 @@ const reducer = (state: TasksState, action: Action) => {
         ),
       };
 
+    case "filtersAndSort/updated":
+      return {
+        ...state,
+        filtersAndSort: {
+          ...state.filtersAndSort,
+          [action.payload.key]: action.payload.value,
+        },
+      };
+
     default:
       throw new Error("Action unknown!");
   }
 };
 
 const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
-  const [{ tasks }, dispatch] = useReducer(reducer, initialState);
+  const [{ tasks, filtersAndSort }, dispatch] = useReducer(
+    reducer,
+    initialState
+  );
 
-  const fetchTasks = async (filtersAndSort: FilterAndSortOtions) => {
+  const fetchTasks = async (filtersAndSort: FilterAndSortOptions) => {
     const data = await getTasks(filtersAndSort);
     dispatch({ type: "tasks/loaded", payload: data });
   };
 
   useEffect(() => {
-    fetchTasks({});
-  }, []);
+    fetchTasks(filtersAndSort);
+  }, [filtersAndSort]);
 
   const addTask = (task: ITask) => {
-    dispatch({ type: "tasks/added", payload: task });
+    if (
+      task.category_id === filtersAndSort.category_id &&
+      task.status === filtersAndSort.status
+    )
+      dispatch({ type: "tasks/added", payload: task });
   };
 
   const removeTask = (taskId: string) => {
@@ -88,6 +117,13 @@ const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
     dispatch({ type: "tasks/updated", payload: task });
   };
 
+  const updateFiltersAndSort = (
+    key: keyof FilterAndSortOptions,
+    value: string
+  ) => {
+    dispatch({ type: "filtersAndSort/updated", payload: { key, value } });
+  };
+
   return (
     <TasksContext.Provider
       value={{
@@ -96,6 +132,8 @@ const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
         removeTask,
         updateTask,
         fetchTasks,
+        filtersAndSort,
+        updateFiltersAndSort,
       }}
     >
       {children}
@@ -103,7 +141,7 @@ const TasksProvider: React.FC<TasksProviderProps> = ({ children }) => {
   );
 };
 
-const useTasks: Function = () => {
+const useTasks: Function = (): TasksContextProps => {
   const context = useContext(TasksContext);
 
   if (context === undefined) {

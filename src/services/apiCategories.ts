@@ -1,11 +1,6 @@
+import { ICategory } from "../models/categories.model";
 import { fetcher } from "../utils/fetcher";
 
-const API_URL = "http://localhost:5555/api/categories";
-
-export interface ICategory {
-  title: string;
-  _id?: string;
-}
 //TODO
 /**
  * This method is responsible for creating categories

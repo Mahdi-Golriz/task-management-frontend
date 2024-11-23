@@ -1,27 +1,6 @@
-import { TaskStats } from "../components/Footer";
+import { TaskStats } from "../components/footer";
+import { FilterAndSortOptions, ITask } from "../models/tasks.model";
 import { fetcher } from "../utils/fetcher";
-
-type Category_id = {
-  _id: string;
-  title: string;
-};
-
-export interface ITask {
-  _id: string;
-  title: string;
-  dueDate: string;
-  category_id: string;
-  description?: string;
-  status: "Done" | "Planned" | "Pending";
-  createdAt: string;
-}
-
-export interface FilterAndSortOtions {
-  category_id?: string;
-  status?: string;
-  search?: string;
-  sort?: string;
-}
 
 /**
  * This method is responsible for create a new task
@@ -37,7 +16,7 @@ export const createTask: Function = async (task: ITask) => {
  * @param filtersAndSort FilterAndSortOptions
  * @returns ITask[]
  */
-export const getTasks = async (filtersAndSort: FilterAndSortOtions) => {
+export const getTasks = async (filtersAndSort: FilterAndSortOptions) => {
   const query = new URLSearchParams(
     filtersAndSort as Record<string, string>
   ).toString();

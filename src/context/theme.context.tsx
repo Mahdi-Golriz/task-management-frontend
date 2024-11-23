@@ -1,11 +1,5 @@
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { useLocalStorageState } from "../hooks/useLocalStrorage";
+import React, { createContext, ReactNode, useContext, useEffect } from "react";
+import { useLocalStorageState } from "../hooks";
 
 type theme = "light" | "dark";
 
@@ -21,7 +15,7 @@ interface ThemeProviderProps {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  // use the a custom hook to load the perefered theme from localStorage or set it dark if it's not set yet
+  // use the a custom hook to load the preferred theme from localStorage or set it dark if it's not set yet
   const [theme, setTheme] = useLocalStorageState({
     initialState: "dark",
     key: "theme",
@@ -29,12 +23,12 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   // set the theme dark as default or the stored theme in local storage if it's set before
   useEffect(() => {
-    // const preferedTheme = window.matchMedia(
+    // const preferredTheme = window.matchMedia(
     //   "(prefers-color-scheme: dark)"
     // ).matches;
 
     // console.log(window.matchMedia("(prefers-color-scheme: dark)"));
-    // if (preferedTheme) return document.documentElement.classList.add(theme);
+    // if (preferredTheme) return document.documentElement.classList.add(theme);
 
     // setTheme("light");
     document.documentElement.classList.add(theme);
