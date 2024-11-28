@@ -10,7 +10,17 @@ module.exports = {
   },
 
   resolve: {
+    alias: {
+      "@components": path.resolve(__dirname, "src/components/"),
+      "@utils": path.resolve(__dirname, "src/utils/"),
+      "@context": path.resolve(__dirname, "src/context/"),
+      "@forms": path.resolve(__dirname, "src/forms/"),
+      "@models": path.resolve(__dirname, "src/models/"),
+      "@services": path.resolve(__dirname, "src/services/"),
+      "@hooks": path.resolve(__dirname, "src/hooks/"),
+    },
     extensions: [".tsx", ".ts", ".js"],
+    mainFiles: ["index"],
   },
   module: {
     rules: [
@@ -39,7 +49,7 @@ module.exports = {
   devServer: {
     static: path.join(__dirname, "dist"),
     hot: true,
-    port: 3000,
+    port: 8787,
     open: true,
   },
   mode: "development",

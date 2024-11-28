@@ -1,6 +1,6 @@
-import { TaskStats } from "../components/footer";
-import { FilterAndSortOptions, ITask } from "../models/tasks.model";
-import { fetcher } from "../utils/fetcher";
+import { TaskStats } from "@components/footer";
+import { FilterAndSortOptions, ITask } from "@models/tasks.model";
+import fetcher from "@utils/fetcher";
 
 /**
  * This method is responsible for create a new task
@@ -29,7 +29,7 @@ export const getTasks = async (filtersAndSort: FilterAndSortOptions) => {
  * @param taskId string
  * @returns string
  */
-export const deleteTask = async (taskId: string) => {
+export const deleteTaskFromDatabase = async (taskId: string) => {
   return await fetcher({ path: `/tasks/${taskId}`, method: "DELETE" });
 };
 

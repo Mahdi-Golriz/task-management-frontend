@@ -1,5 +1,5 @@
+import { countTasks } from "@services/tasks.service";
 import { useEffect, useState } from "react";
-import { countTasks } from "../../services/apiTasks";
 
 export interface TaskStats {
   totalTasks: number | string;

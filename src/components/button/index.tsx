@@ -1,10 +1,11 @@
-import { cn } from "../../utils/cn";
+import { cn } from "@utils";
 import { ReactNode } from "react";
 
 interface IProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
   icon?: ReactNode;
-  variant?: "dark" | "light" | "iconOnly";
+  variant?: "dark" | "light" | "onSurface";
+  iconOnly?: boolean;
 }
 
 const Button: React.FC<IProps> = ({
@@ -12,6 +13,7 @@ const Button: React.FC<IProps> = ({
   icon,
   className,
   variant = "light",
+  iconOnly,
   ...props
 }) => {
   const Icon = () => icon;
@@ -22,14 +24,16 @@ const Button: React.FC<IProps> = ({
     dark: "bg-slate-800 text-white",
     light: "bg-white",
     // for cases like delete and edit icon in each task item
-    iconOnly: "p-1 border-none",
+    onSurface: "p-0 m-0 border-none gap-0",
   };
 
-  const content = (
+  const content = !iconOnly ? (
     <>
       {icon && <span>{<Icon />}</span>}
       <span>{children}</span>
     </>
+  ) : (
+    <span>{<Icon />}</span>
   );
 
   // using cn to prevent from any conflict between tailwind classes

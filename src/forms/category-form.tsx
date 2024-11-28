@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Button from "../components/button";
-import { createCategory, getCategories } from "../services/apiCategories";
-import { useCategories } from "../context";
+import Button from "@components/button";
+import { createCategory, getCategories } from "@services/categories.service";
+import { useCategories } from "@context";
 
 interface ICategoryFormProps {
   setIsShowCategoryForm: (visible: boolean) => void;

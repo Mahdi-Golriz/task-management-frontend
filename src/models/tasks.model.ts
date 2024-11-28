@@ -1,4 +1,4 @@
-export interface ITask {
+interface ITask {
   _id: string;
   title: string;
   dueDate: string;
@@ -7,15 +7,24 @@ export interface ITask {
   status: "Done" | "Planned" | "Pending";
   createdAt: string;
 }
-export interface FilterAndSortOptions {
+interface FilterAndSortOptions {
   category_id?: string;
   status?: string;
   search?: string;
   sort?: string;
 }
 
-export enum Status {
+enum Status {
   Pending = "Pending",
   Planned = "Planned",
   Done = "Done",
 }
+
+enum SortOption {
+  SortedByDueDate = "sortedByDueDate",
+  SortedByCreationDate = "sortedByCreationDate",
+  InitialOrder = "",
+}
+
+export type { ITask, FilterAndSortOptions };
+export { Status, SortOption };

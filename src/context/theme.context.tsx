@@ -1,5 +1,5 @@
+import { useLocalStorageState } from "@hooks";
 import React, { createContext, ReactNode, useContext, useEffect } from "react";
-import { useLocalStorageState } from "../hooks";
 
 type theme = "light" | "dark";
 

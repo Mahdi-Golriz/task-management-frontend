@@ -1,13 +1,12 @@
-import { MdDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
-import { useTasks } from "../../context/tasks.context";
-import { useCategories } from "../../context/categories.context";
-import { ICategory } from "../../models/categories.model";
+import Button from "@components/button";
+import { useCategories, useTasks } from "@context";
+import TaskForm from "@forms/task-form";
+import { ICategory } from "@models/categories.model";
+import { ITask } from "@models/tasks.model";
+import { deleteTaskFromDatabase } from "@services";
 import { useState } from "react";
-import { ITask } from "../../models/tasks.model";
-import Button from "../button";
-import TaskForm from "../../forms/task-form";
-import { deleteTask } from "../../services/apiTasks";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 interface ItemProps {
   task: ITask;
@@ -17,36 +16,63 @@ interface ItemProps {
 const Item: React.FC<ItemProps> = ({ task }) => {
   // description of task is showed by clicking on it as a modal
   const [isShowedDescription, setIsShowedDescription] = useState(false);
+
   // task can be edited by a modal form (same as creating)
   const [isShowedEditForm, setIsShowedEditForm] = useState(false);
-  // task properties
-  const { title, category_id, description, dueDate, status, createdAt } = task;
-  // task can be deleted
-  const { removeTask } = useTasks();
 
-  // we need to get categories from our database to map the category_id of each task to its title
+  const { title, category_id, description, dueDate, status, createdAt } = task;
+
+  const taskContext = useTasks();
+
   const { categories } = useCategories();
 
-  const category =
+  const categoryTitle =
     categories.find((cat: ICategory) => cat._id === category_id)?.title ??
     "No Category";
 
   const handleDeleteClick = (e: React.MouseEvent) => {
-    // Prevent description toggle
     e.stopPropagation();
     if (confirm("Are you sure!?") == true) {
-      // delete task from database
-      deleteTask(task._id);
-      // delete task from tasks state stored in tasksContext to update the UI
-      removeTask(task._id);
+      deleteTaskFromDatabase(task._id);
+
+      taskContext.removeTask(task._id);
     }
   };
 
   const handleEditClick = (e: React.MouseEvent) => {
-    // Prevent description toggle
     e.stopPropagation();
     setIsShowedEditForm(!isShowedEditForm);
   };
+
+  const renderDescription = () => (
+    <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-black z-40">
+      <div className="bg-white rounded p-5 w-1/3">
+        <h3 className="py-2 font-bold">Description</h3>
+        <p className="p-3  border ">
+          {description || "There is no detail to show"}
+        </p>
+        <Button
+          variant="dark"
+          onClick={() => {
+            setIsShowedDescription(!isShowedDescription);
+          }}
+          className="bg-red-700 mx-auto"
+        >
+          Close
+        </Button>
+      </div>
+    </div>
+  );
+
+  const itemBody = () => (
+    <>
+      <div className="w-3/10">{title}</div>
+      <div className="w-3/20">{categoryTitle}</div>
+      <div className="w-3/20">{new Date(createdAt).toLocaleDateString()}</div>
+      <div className="w-3/20">{new Date(dueDate).toLocaleDateString()}</div>
+      <div className="w-3/20">{status}</div>
+    </>
+  );
 
   return (
     <div
@@ -58,46 +84,23 @@ const Item: React.FC<ItemProps> = ({ task }) => {
         }
       }}
     >
-      <div className="w-3/10">{title}</div>
-      <div className="w-3/20">{category}</div>
-      <div className="w-3/20">{new Date(createdAt).toLocaleDateString()}</div>
-      <div className="w-3/20">{new Date(dueDate).toLocaleDateString()}</div>
-      <div className="w-3/20">{status}</div>
+      {itemBody()}
+      {isShowedDescription && renderDescription()}
 
-      {isShowedDescription && (
-        <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-black z-40">
-          <div className="bg-white rounded p-5 w-1/3">
-            <h3 className="py-2 font-bold">Description</h3>
-            <p className="p-3  border ">
-              {description || "There is no detail to show"}
-            </p>
-            <Button
-              variant="dark"
-              onClick={() => {
-                setIsShowedDescription(!isShowedDescription);
-              }}
-              className="bg-red-700 mx-auto"
-            >
-              Close
-            </Button>
-          </div>
-        </div>
-      )}
-
-      <div className="w-1/20">
+      <div className="w-1/20 flex justify-start items-center">
         <Button
-          icon={<MdDelete />}
-          variant="iconOnly"
+          iconOnly
+          icon={<MdDelete size={16} />}
+          variant="onSurface"
           onClick={handleDeleteClick}
-          className="text-lg p-0 m-0"
         />
       </div>
-      <div className="w-1/20">
+      <div className="w-1/20 flex justify-start items-center">
         <Button
-          icon={<FaEdit />}
-          variant="iconOnly"
+          iconOnly
+          icon={<FaEdit size={16} />}
+          variant="onSurface"
           onClick={handleEditClick}
-          className="text-lg p-0 m-0"
         />
         {isShowedEditForm && (
           <TaskForm

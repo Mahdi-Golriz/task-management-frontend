@@ -17,7 +17,7 @@ const handleError = (error: any) => {
   throw new Error(error.message || "Something went wrong!");
 };
 
-export const fetcher = async <T>(config: FetcherConfig): Promise<T> => {
+const fetcher = async <T>(config: FetcherConfig): Promise<T> => {
   const { path, method } = config;
   const URL = `${process.env.API_URL}${path}`;
 
@@ -54,3 +54,5 @@ export const fetcher = async <T>(config: FetcherConfig): Promise<T> => {
     throw error;
   }
 };
+
+export default fetcher;

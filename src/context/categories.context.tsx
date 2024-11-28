@@ -5,8 +5,8 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { getCategories } from "../services/apiCategories";
-import type { ICategory } from "../models/categories.model";
+import { getCategories } from "@services";
+import type { ICategory } from "@models/categories.model";
 
 interface CategoriesContextProps {
   categories: ICategory[];

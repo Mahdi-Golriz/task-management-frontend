@@ -1,5 +1,5 @@
-import { ICategory } from "../models/categories.model";
-import { fetcher } from "../utils/fetcher";
+import { ICategory } from "@models/categories.model";
+import fetcher from "@utils/fetcher";
 
 //TODO
 /**

@@ -6,8 +6,8 @@ import {
   useEffect,
   useReducer,
 } from "react";
-import { getTasks } from "../services/apiTasks";
-import type { FilterAndSortOptions, ITask } from "../models/tasks.model";
+import { getTasks } from "@services/tasks.service";
+import type { FilterAndSortOptions, ITask } from "@models/tasks.model";
 
 interface TasksContextProps {
   tasks: ITask[];

@@ -1,2 +1,2 @@
-export * from "./apiCategories";
-export * from "./apiTasks";
+export * from "./categories.service";
+export * from "./tasks.service";

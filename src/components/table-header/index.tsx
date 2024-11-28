@@ -1,5 +1,5 @@
 // A UI component to present the first row of tasks's table
-const TableHeader: React.FC = () => {
+const TableHeader = () => {
   return (
     <div className="w-full flex justify-around items-center bg-slate-800 text-white rounded p-2 box-border text-sm dark:bg-gray-700">
       <div className="w-3/10">title</div>

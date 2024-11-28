@@ -1,14 +1,12 @@
 import { ReactElement, useState } from "react";
-// import Button from "./button.tsx";
 
 import { FiPlus } from "react-icons/fi";
-
 import { FaMoon } from "react-icons/fa6";
 import { MdOutlineWbSunny } from "react-icons/md";
-import { useTheme } from "../../context/theme.context";
-import Button from "../button";
-import CategoryForm from "../../forms/category-form";
-import TaskForm from "../../forms/task-form";
+import { useTheme } from "@context";
+import Button from "@components/button";
+import { CategoryForm } from "@forms";
+import TaskForm from "@forms/task-form";
 
 // In Header component we handle displaying new Task and new Category modals and theme changing
 const Header: React.FC = (): ReactElement => {
@@ -25,9 +23,10 @@ const Header: React.FC = (): ReactElement => {
       </h2>
       <div className="flex">
         <Button
+          iconOnly
           icon={theme === "light" ? <MdOutlineWbSunny /> : <FaMoon />}
           onClick={toggleTheme}
-          variant="light"
+          variant="dark"
         />
         <Button
           icon={<FiPlus />}

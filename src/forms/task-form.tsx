@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import Button from "../components/button";
+import Button from "@components/button";
 
-import { createTask, editTask } from "../services/apiTasks";
-import { useCategories } from "../context/categories.context";
-import { useTasks } from "../context/tasks.context";
-import { ITask, Status } from "../models/tasks.model";
-import { ICategory } from "../models/categories.model";
+import { createTask, editTask } from "@services/tasks.service";
+import { useCategories, useTasks } from "@context";
+import { ITask, Status } from "@models/tasks.model";
+import { ICategory } from "@models/categories.model";
 
 interface TaskFormProps {
   isShowedTaskForm: boolean;
@@ -26,36 +25,35 @@ const TaskForm: React.FC<TaskFormProps> = ({
   // different initial values for different form  (create task or edit task)
   const [title, setTitle] = useState(task?.title || "");
   const [description, setDescription] = useState(task?.description || "");
-  const [due, setDue] = useState(
+  const [dueDate, setDueDate] = useState(
     task?.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : ""
   );
-  const [category, setCategory] = useState(task?.category_id || "");
+  const [categoryId, setCategoryId] = useState(task?.category_id || "");
   const [status, setStatus] = useState<Status>(
     (task?.status as Status) || Status.Planned
   );
-  const [createdAt, setCreatedAt] = useState(
-    task?.createdAt
-      ? new Date(task.createdAt).toISOString().split("T")[0]
-      : new Date().toISOString().split("T")[0]
-  );
+  const createdAt = task?.createdAt
+    ? new Date(task.createdAt).toISOString().split("T")[0]
+    : new Date().toISOString().split("T")[0];
 
   const { categories } = useCategories();
-  const { addTask, updateTask } = useTasks();
+  const taskContext = useTasks();
 
-  // This method handles creating the task
   const createNewTask: Function = async () => {
     const newTask = {
       title,
       description,
-      dueDate: due,
-      category_id: category,
+      dueDate: dueDate,
+      category_id: categoryId,
     };
 
     try {
       // creates the task in database
       const createdTask = await createTask(newTask);
+
       // add the created task to tasks state stored in tasksContext to update the UI and keep in sync it with database
-      addTask(createdTask);
+      taskContext.addTask(createdTask);
+
       alert("new task was added");
     } catch (error) {
       console.error("Failed to create task:", error);
@@ -64,7 +62,6 @@ const TaskForm: React.FC<TaskFormProps> = ({
     }
   };
 
-  // This method handles editing the task
   const editAvailableTask: Function = async () => {
     if (!task) return;
 
@@ -72,17 +69,19 @@ const TaskForm: React.FC<TaskFormProps> = ({
       _id: task._id,
       title,
       description,
-      dueDate: due,
+      dueDate: dueDate,
       status,
       createdAt,
-      category_id: category,
+      category_id: categoryId,
     };
 
     try {
       // edits the task in database
       const editedTask = await editTask(edition);
+
       // edit the task in tasks state stored in tasksContext to update the UI and keep in sync it with database
-      updateTask(editedTask);
+      taskContext.updateTask(editedTask);
+
       alert("The task was edited");
     } catch (error) {
       console.error("Failed to edit task:", error);
@@ -91,15 +90,22 @@ const TaskForm: React.FC<TaskFormProps> = ({
     }
   };
 
-  // create or edit task based on editForm prop
   const handleSubmitTaskForm = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (editForm) {
       await editAvailableTask();
     } else {
       await createNewTask();
     }
   };
+
+  const categoryOptions = () =>
+    categories.map((cat: ICategory) => (
+      <option key={cat._id} value={cat._id}>
+        {cat.title}
+      </option>
+    ));
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 text-sm">
@@ -133,27 +139,23 @@ const TaskForm: React.FC<TaskFormProps> = ({
           <input
             id="due"
             type="date"
-            value={due as string}
+            value={dueDate as string}
             className="border-2 p-2 box-border"
-            onChange={(e) => setDue(e.target.value)}
+            onChange={(e) => setDueDate(e.target.value)}
             required
           />
           <label htmlFor="category">Choose the Category</label>
           <select
             id="category"
-            value={category}
+            value={categoryId}
             className="w-full border-2 p-2 box-border"
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e) => setCategoryId(e.target.value)}
             required
           >
             <option value="" disabled>
               Select a category
             </option>
-            {categories.map((cat: ICategory) => (
-              <option key={cat._id} value={cat._id}>
-                {cat.title}
-              </option>
-            ))}
+            {categoryOptions()}
           </select>
 
           <label htmlFor="status">Choose the Status</label>

@@ -1,8 +1,6 @@
 import React from "react";
-import { Form, List, Footer, Header } from "./components";
-import { CategoriesProvider } from "./context/categories.context";
-import { TasksProvider } from "./context/tasks.context";
-import { ThemeProvider } from "./context/theme.context";
+import { Form, List, Footer, Header } from "@components";
+import { CategoriesProvider, TasksProvider, ThemeProvider } from "@context";
 
 const App: React.FC = () => {
   return (
