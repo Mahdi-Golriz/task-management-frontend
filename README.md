@@ -83,7 +83,7 @@ This project helped me deeply understand React’s rendering behavior, modular c
    ```
 3. Run the project
 
-  ```sh
+   ```sh
    npm run start
    ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
