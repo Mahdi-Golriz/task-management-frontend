@@ -1,4 +1,5 @@
 <a id="readme-top"></a>
+This is the frontend for the **Task Management App**, built using **React**, **TypeScript**, and **Tailwind CSS** with a **custom Webpack configuration** and no build tool like Vite or Create React App.
 
 <!-- PROJECT Demo -->
 
@@ -6,14 +7,15 @@
 
 <br />
 <div align="center">
-  <h3 align="center">Slider-Pure-JavaScript-SCSS</h3>
+  <h3 align="center">Task Management Frontend</h3>
   <p align="center">
-    An awesome elementary JavaScript task!
+    A clean and responsive frontend built from scratch!
   </p>
   <img alt="demo" src='./images/Demo.gif' />
 </div>
 
 <!-- TABLE OF CONTENTS -->
+
 <details>
   <summary>Table of Contents</summary>
   <ol>
@@ -35,45 +37,64 @@
 
 ## About The Project
 
-This project is a hands-on task aimed at deepening my understanding of JavaScript. The objective is to build an image slider with the following features:
+This frontend project is part of a full-stack task management app. It was intentionally built **without a boilerplate tool** like Create React App or Vite. Instead, I set up a **custom Webpack configuration**, gaining a deep understanding of bundling and development environments.
 
-- A title and description displayed above each image
-- Navigation via left and right arrows
-- Slide control using dots below the slider
-- Navigation through arrow keys
-- Infinite looping without duplicating items
-- Autoplay functionality
-- Support for custom image widths
-- Support for custom image heights
-- Full customization of properties through an object passed to the constructor
+### ✨ Key Features:
+- Built with **React** and **TypeScript**
+- Managed state using **React Context** and the `useReducer` hook
+- Responsive UI with **Tailwind CSS**
+- Integrated backend APIs using a custom reusable `fetcher` function
+- Fully responsive, accessible, and lightweight
+- No external build tools used — fully manual Webpack setup
 
-Through this project, I gained practical experience in working with DOM elements, manipulating - them, handling events, and interacting with web APIs. Initially, I designed an algorithm to implement the required features, then used the Factory Design Pattern for the implementation. For styling, I leveraged SCSS and its various capabilities.
-
-You can customize the slider by specifying options such as the initial slide to be displayed, the autoplay interval, and the slider's dimensions. Additionally, you have the flexibility to define the number of slides directly in the HTML section.
+This project helped me deeply understand React’s rendering behavior, modular component structure, custom hooks, and manual bundling using Webpack.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
-- ![HTML][HTML.dev]
-- ![JavaScript][JavaScript.js]
-- ![sass][sass.css]
+- ![React][React]
+- ![TypeScript][TypeScript]
+- ![TailwindCSS][Tailwind]
+- ![Webpack][Webpack]
+- ![Node.js][Node]
+- ![ESLint][ESLint]
+- 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 
 ## Getting Started
 
+### 🔧 Prerequisites
+
+- Node.js (v18 or higher recommended)
+
+### ⚙️ Setup
+
+
 1. Clone the repo
    ```sh
-   git clone https://github.com/Mahdi-Golriz/Slider-PureJS-SCSS.git
+   git clone https://github.com/Mahdi-Golriz/task-management-frontend.git
    ```
 2. Install NPM packages
    ```sh
    npm install
    ```
-3. Run the project using live server
+3. Run the project
+
+  ```sh
+   npm run start
+   ```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+🔐 Environment Variables
+Create a .env file in the root:
+
+```env
+API_URL="http://localhost:5555/api"
+NODE_ENV=development
+```
 
 ## Dear Instructor
 
@@ -90,10 +111,3 @@ Made by Mahdi Golriz 🚀.
 This project is under the [MIT license](https://opensource.org/licenses/MIT).
 
 Give a ⭐️ if this project helped you!
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
-[HTML.dev]: https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white
-[JavaScript.js]: https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E
-[sass.css]: https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white
