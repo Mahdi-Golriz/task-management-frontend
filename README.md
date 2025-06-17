@@ -11,7 +11,7 @@ This is the frontend for the **Task Management App**, built using **React**, **T
   <p align="center">
     A clean and responsive frontend built from scratch!
   </p>
-  <img alt="demo" src='./images/Demo.gif' />
+  <img alt="demo" src='./src/images/demo.gif' />
 </div>
 
 <!-- TABLE OF CONTENTS -->
