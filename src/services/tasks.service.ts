@@ -42,7 +42,7 @@ export const editTask = async (task: Partial<ITask>) => {
   return await fetcher<ITask>({
     path: `/tasks/${task._id}`,
     method: "PUT",
-    body: task,
+    // body: task,
   });
 };
 
