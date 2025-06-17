@@ -53,13 +53,13 @@ This project helped me deeply understand React’s rendering behavior, modular c
 
 ### Built With
 
-- ![React][React]
-- ![TypeScript][TypeScript]
-- ![TailwindCSS][Tailwind]
-- ![Webpack][Webpack]
-- ![Node.js][Node]
-- ![ESLint][ESLint]
-- 
+- ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+- ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+- ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+- ![Webpack](https://img.shields.io/badge/Webpack-8DD6F9?style=for-the-badge&logo=webpack&logoColor=white)
+
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
